@@ -14,7 +14,7 @@ files=( $(sudo find / -name "php.ini") )
 for file in "${files[@]}"; do 
 	grep "extension=zmq.so" $file >> /dev/null
 	if [ $? -ne 0 ]; then
-		sudo echo "extension=zmq.so" >> $file
+		echo "extension=zmq.so" | sudo tee -a $file
 		if [ $? -ne 0 ]; then 
 			echo "error adding extension to $file, skipping file"
 		fi
