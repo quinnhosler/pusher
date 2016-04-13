@@ -3,11 +3,24 @@
 # check if PHP is installed
 php -v >> /dev/null
 if [ $? -ne 0 ]; then echo "PHP is not installed"; exit 1; fi
-echo "php is installed correctly"
+echo "php is working"
 
 apache2 -v >> /dev/null
 if [ $? -ne 0 ]; then echo "PHP is not installed"; exit 1; fi
-echo "apache is installed correctly"
+echo "apache is working"
+
+# modify php.ini 
+files=( $(sudo find / -name "php.ini") )
+for file in "${files[@]}"; do 
+	grep "extension=zmq.so" $file >> /dev/null
+	if [ $? -ne 0 ]; then
+		sudo echo "extension=zmq.so" >> $file
+		if [ $? -ne 0 ]; then 
+			echo "error adding extension to $file, skipping file"
+		fi
+	fi
+done
+
 
 if [ ! -e "composer.phar" ]; then
 	# May break, depends on current version of Composer
@@ -24,16 +37,4 @@ sudo chmod +x composer.phar
 
 # run composer install
 php composer.phar install
-
-# modify php.ini 
-files=( $(sudo find / -name "php.ini") )
-for file in files; do 
-	grep "extension=zmq.so" $file >> /dev/null
-	if [ $? -ne 0 ]; then
-		sudo echo "extension=zmq.so" >> $file
-		if [ $? -ne 0 ]; then 
-			echo "error adding extension to $file, skipping file"
-		fi
-	fi
-done
 
