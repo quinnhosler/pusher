@@ -10,10 +10,7 @@ if [ $? -ne 0 ]; then echo "PHP is not installed"; exit 1; fi
 echo "apache is working"
 
 # install zmq
-phpize -v >> /dev/null
-if [ "$?" -ne 0 ]; then
-	sudo apt-get install php5-dev
-fi
+sudo apt-get install php5-dev pkg-config libzmq-dev -y
 
 git clone git://github.com/mkoppanen/php-zmq.git
 pushd php-zmq
