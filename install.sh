@@ -50,3 +50,5 @@ sudo chmod +x composer.phar
 # run composer install
 php composer.phar install
 
+sudo service apache2 restart
+
